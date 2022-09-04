@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body">
+    <%- include('navbar.html') %>
+
+    <div style="padding: 3em;">
+        <form action="/write" method="post">
+            <div class="mb-3">
+                <label for="inputTitle" class="form-label">제목</label>
+                <span id="instrcution-for-title" class="form-text">제목을 입력하세요.</span>
+                <input type="text" class="form-control" name="title" id="inputTitle" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="inputDescription" class="form-label">상세</label>
+                <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" maxlength="1000" placeholder="1000자 이내"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="startDate" class="form-label">시작 날짜</label>
+                <input type="date" class="form-control" name="startDate" id="startDate" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label">종료 날짜</label>
+                <input type="date" class="form-control" name="endDate" id="endDate" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-dark" id="add-btn" disabled>추가</button>
+        </form>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Ga'gi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script>
+        $('#inputTitle').on('input', e => {
+            if ($('#inputTitle').val() == '') {
+                $('#instrcution-for-title').css('display', 'inline');
+                $('#add-btn').prop('disabled', true);
+            } else {
+                $('#instrcution-for-title').css('display', 'none');
+                $('#add-btn').prop('disabled', false);
+            }
+        });
+
+        const startDate = $('#startDate');
+        const endDate = $('#endDate');
+        const today = new Date().toISOString().split('T')[0];
+
+        startDate.val(today);
+        endDate.val(today);
+
+        var cacheEndDate = endDate.val();
+
+        startDate.on('input', e => {
+            const start = new Date($(e.target).val());
+            const end = new Date($('#endDate').val());
+
+            if (start > end) {
+                $('#endDate').val(start.toISOString().split('T')[0]);
+                cacheEndDate = start.toISOString().split('T')[0];
+            }
+        });
+
+        endDate.on('input', e => {
+            const endDateElem = $(e.target);
+            const start = new Date($('#startDate').val());
+            const end = new Date(endDateElem.val())
+            if (start > end) {
+                alert('날짜를 다시 선택해 주세요(종료 날짜는 시작 날짜보다 빠를 수 없음)');
+                endDateElem.val(cacheEndDate);
+            } else {
+                cacheEndDate = endDateElem.val();
+            }
+        });
+    </script>
+</body>
+</html>
