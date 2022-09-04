@@ -12,8 +12,9 @@ app.listen(process.env.PORT, () => {
 
 app.use('/public', express.static('public'));
 
-app.get('/', require('./home'));
-app.use('/', require('./write'));
-app.use('/', require('./list'));
-app.use('/', require('./account'));
-app.use('/', require('./delete'));
+app.use('/', require('./routes/home'));
+app.use('/', require('./routes/write'));
+app.use('/', require('./routes/list'));
+app.use('/', require('./routes/auth'));
+app.use('/', require('./routes/delete'));
+app.use('/', require('./routes/mypage'));

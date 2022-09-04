@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const db = require('./db');
-const collectionsName = require('./constants').collections;
+const db = require('../db');
+const collectionsName = require('../constants').collections;
 
 router.get('/list', (req, resp) => {
     db.findMultipleItemsAsAnArray({ }, collectionsName.post, (err, result) => {

@@ -1,5 +1,5 @@
-const db = require('./db');
-const collections = require('./constants').collections;
+const db = require('../db');
+const collections = require('../constants').collections;
 
 const app = require('express').Router();
 

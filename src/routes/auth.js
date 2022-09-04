@@ -1,0 +1,90 @@
+const app = require('express').Router();
+const db = require('../db');
+const collections = require('../constants').collections;
+const crypto = require('crypto');
+
+require('dotenv').config();
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const session = require('express-session');
+
+app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy({
+    usernameField: 'id',
+    passwordField: 'pw',
+    session: true,
+    passReqToCallback: false
+}, (inputId, inputPw, done) => {
+    db.findOne({ id: inputId }, collections.login, (err, result) => {
+        if (err) {
+            return done(err);
+        }
+        if (!result) {
+            return done(null, false, { message: 'Does not exist such ID' });
+        }
+
+        crypto.pbkdf2(inputPw, result.salt, 310000, 32, 'sha256', (err, hashedPassword) => {
+            if (err) {
+                return done(err);
+            }
+            if (!crypto.timingSafeEqual(result.pw, hashedPassword)) {
+                return done(null, false, { message: 'Incorrect username or password.' });
+            }
+            return done(null, result);
+        });
+    });
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((inputId, done) => {
+    db.findOne({ id: inputId }, collections.login, (err, result) => {
+        done(null, result);
+    });
+});
+
+app.get('/login', (req, resp) => {
+    resp.render('login.ejs');
+});
+
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/fail'
+}));
+
+app.get('/signup', (req, resp, next) => {
+    resp.render('signup.ejs');
+});
+
+app.post('/signup', (req, resp, next) => {
+    const salt = crypto.randomBytes(128).toString('base64');
+    crypto.pbkdf2(req.body.pw, salt, 310000, 32, 'sha256', (err, hashedPassword) => {
+        if (err) {
+            return next(err);
+        }
+        db.insertOne({ id: req.body.id, pw: hashedPassword, salt: salt }, collections.login, (err, result) => {
+            if (err) {
+                return next(err);
+            } else {
+                resp.redirect('/'); // TODO Redirect the user to a page of success of sign-up.
+            }
+        });
+    });
+})
+
+const hasLoggedIn = (req, resp, next) => {
+    if (req.user) {
+        next();
+    } else {
+        resp.send('Please Sign in');
+    }
+}
+
+module.exports = app;
+module.exports = hasLoggedIn;
