@@ -10,20 +10,20 @@
 <body>
     <%- include('navbar.html') %>
 
-    <ul>
+    <div class="list-group">
         <% for (let i = 0; i < posts.length; i++) { %>
-        <li>
-            <div>
-                <p>글 번호: <%= posts[i]._id %></p>
-                <h4><a href="<%= '/list/' + posts[i]._id %>">제목: <%= posts[i].title %></a></h4>
-                <p>상세: <%= posts[i].description %></p>
-                <p>시작날짜: <%= posts[i].startDate %></p>
-                <p>종료날짜: <%= posts[i].endDate %></p>
+        <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <a style="text-decoration: none; color: black;" href="<%= '/list/' + posts[i]._id %>" aria-current="true"><h5 class="mb-1"><%= posts[i].title %></h5></a>
+                <small>글 번호: <%= posts[i]._id %></small>
             </div>
-            <button class="delete" data-id="<%= posts[i]._id %>">삭제</button>
-        </li>
+            <p class="mb-1">시작날짜: <%= posts[i].startDate %></p>
+            <p class="mb-1">종료날짜: <%= posts[i].endDate %></p>
+            <!-- <small>And some small print.</small>   A part of the description may be here -->
+            <button class="delete btn btn-danger" data-id="<%= posts[i]._id %>">삭제</button>
+        </div>
         <% } %>
-    </ul>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <!-- JavaScript Bundle with Popper -->
@@ -34,7 +34,7 @@
                 method: 'DELETE',
                 url: '/delete/' + e.target.dataset.id,
             }).done(result => {
-                $(e.target).parent('li').remove();
+                $(e.target).parent('div').remove();
             }).fail((xhr, status, err) => {
                 console.error(xhr, status, err);
             });
