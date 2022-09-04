@@ -10,12 +10,9 @@ app.listen(process.env.PORT, () => {
     console.log('connected 8080...');
 });
 
-app.get('/', (req, resp) => {
-    resp.render('index.ejs');
-});
-
 app.use('/public', express.static('public'));
 
+app.get('/', require('./home'));
 app.use('/', require('./write'));
 app.use('/', require('./list'));
 app.use('/', require('./account'));

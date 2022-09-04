@@ -1,7 +1,7 @@
 const db = require('./db');
 const collections = require('./constants').collections;
 
-app = require('express').Router();
+const app = require('express').Router();
 
 app.get('/write', (req, resp) => {
     resp.render('write.ejs');
