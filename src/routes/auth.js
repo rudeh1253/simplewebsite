@@ -57,6 +57,9 @@ passport.use(new LocalStrategy({
             return done(null, false, { message: 'Does not exist such ID' });
         }
 
+        // When storing an encrypted password into MongoDB, it converts the Buffer instance into a Binary instance.
+        // So in order to compare the encrypted password in the database with the generated key using the input password,
+        // it is needed to convert them such that they are compatible with each other.
         crypto.pbkdf2(inputPw, result.salt, pbkdf2Iteration, pbkdf2Len, 'sha256', (err, hashedPassword) => {
             if (err) {
                 return done(err);
