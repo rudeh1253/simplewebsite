@@ -23,6 +23,7 @@ class DB {
         this.mongoClient.connect(this.dbUrl, (error, client) => {
             if (error) {
                 console.log(error);
+                console.log('-----------------------');
                 return;
             }
 
@@ -39,14 +40,11 @@ class DB {
      * @param {string} collection where you want to put your item.
      * @param {*} clientCallback which is executed if it is successful to insert it. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @returns result of query to db
      */
     insertOne(item, collection, clientCallback) {
-        let returnVal;
         this.db.collection(collection).insertOne(item, (err, result) => {
-            returnVal = callback(err, result, clientCallback);
+            callback(err, result, clientCallback);
         });
-        return returnVal;
     }
 
     /**
@@ -56,14 +54,11 @@ class DB {
      * @param {string} collection where you want to put your items.
      * @param {*} clientCallback which is executed if it is successful to insert them. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @returns result of query to db
      */
     insertMultipleItems(items, collection, clientCallback) {
-        let returnVal;
         this.db.collection(collection).insertMany(items, (err, result) => {
-            returnVal = callback(err, result, clientCallback);
+            callback(err, result, clientCallback);
         });
-        return returnVal;
     }
 
     /**
@@ -75,14 +70,11 @@ class DB {
      * @param {string} collection where you are finding the item from
      * @param {*} clientCallback which is executed if it is successful to find it. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @returns result of query to db
      */
     findOne(query, collection, clientCallback) {
-        let returnVal;
         this.db.collection(collection).findOne(query, (err, result) => {
-            returnVal = callback(err, result, clientCallback);
+            callback(err, result, clientCallback);
         });
-        return returnVal;
     }
 
     /**
@@ -94,14 +86,11 @@ class DB {
      * @param {string} collection where you are finding from
      * @param {*} clientCallback which is executed if it is successful to find it. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @returns result of query to db
      */
     findMultipleItemsAsAnArray(query, collection, clientCallback) {
-        let returnVal;
         this.db.collection(collection).find(query).toArray((err, result) => {
-            returnVal = callback(err, result, clientCallback);
+            callback(err, result, clientCallback);
         });
-        return returnVal;
     }
 
     /**
@@ -111,14 +100,11 @@ class DB {
      * @param {string} collection where the item to be deleted is contained.
      * @param {*} clientCallback which is executed if it is successful to delete it. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @return result of query to db
      */
     deleteOne(query, collection, clientCallback) {
-        let returnVal;
         this.db.collection(collection).deleteOne(query, (err, result) => {
-            returnVal = callback(err, result, clientCallback);
+            callback(err, result, clientCallback);
         });
-        return returnVal;
     }
 
     /**
@@ -129,14 +115,11 @@ class DB {
      * @param {*} collection where the items to be deleted is contained.
      * @param {*} callback which is executed if it is successful to delete them. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @returns result of query to db
      */
     deleteMulipleItems(query, collection, callback) {
-        let returnVal;
         this.db.collection(collection).deleteMany(query, (err, result) => {
-            returnVal = callback(err, result, clientCallback);
+            callback(err, result, clientCallback);
         });
-        return returnVal;
     }
 
     /**
@@ -149,21 +132,17 @@ class DB {
      * @param {*} collection where the item to be updated is contained.
      * @param {*} clientCallback which is executed if it is successful to update it. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @return result of query to db
      */
     updateOne(query, to, method, collection, clientCallback) {
-        let returnVal;
-
         if (method) {
             this.db.collection(collection).updateOne(query, { $set: to }, (err, result) => {
-                returnVal = callback(err, result, clientCallback);
+                callback(err, result, clientCallback);
             });
         } else {
             this.db.collection(collection).updateOne(query, { $inc: to }, (err, result) => {
-                returnVal = callback(err, result, clientCallback);
+                callback(err, result, clientCallback);
             });
         }
-        return returnVal;
     }
 
     /**
@@ -179,17 +158,15 @@ class DB {
      * @return result of query to db
      */
     updateMultipleItems(query, to, method, collection, clientCallback) {
-        let returnVal;
         if (method) {
             this.db.collection(collection).updateMany(query, { $set: to }, (err, result) => {
-                returnVal = callback(err, result, clientCallback);
+                callback(err, result, clientCallback);
             });
         } else {
             this.db.collection(collection).updateMany(query, { $inc: to }, (err, result) => {
-                returnVal = callback(err, result, clientCallback);
+                callback(err, result, clientCallback);
             });
         }
-        return returnVal;
     }
 }
 
@@ -201,10 +178,8 @@ function callback(err, result, clientCallback) {
         if (clientCallback != null && clientCallback != undefined) {
             clientCallback(err, result);
         }
-        return result;
     }
 }
-
 db = new DB();
 db.init();
 
