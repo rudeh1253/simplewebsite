@@ -1,9 +1,10 @@
 const db = require('../db');
-const collections = require('../constants').collections;
+const hasLoggedIn = require('../auth/loginchecker');
+const collections = require('../utils/constants').collections;
 
 const app = require('express').Router();
 
-app.get('/write', (req, resp) => {
+app.get('/write', hasLoggedIn, (req, resp) => {
     resp.render('write.ejs');
 });
 
@@ -14,7 +15,8 @@ app.post('/write', async (req, resp) => {
             title: req.body.title,
             description: req.body.description,
             startDate: req.body.startDate,
-            endDate: req.body.endDate
+            endDate: req.body.endDate,
+            author: req.user.id
         };
         db.insertOne(reqData, collections.post);
         db.updateOne({ name: 'count' }, { count: 1 }, false, collections.postCount);

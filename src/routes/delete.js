@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const db = require('../db');
-const collectionsName = require('../constants').collections;
+const collectionsName = require('../utils/constants').collections;
 
 router.delete('/delete/:number', (req, resp) => {
     // db.deleteOne(req.body, collectionsName.post);

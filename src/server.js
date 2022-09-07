@@ -1,6 +1,4 @@
 const express = require('express');
-const { Binary } = require('mongodb');
-const { dbName } = require('./constants');
 const app = express();
 
 require('dotenv').config();
@@ -20,3 +18,4 @@ app.use('/', require('./routes/list'));
 app.use('/', require('./routes/auth'));
 app.use('/', require('./routes/delete'));
 app.use('/', require('./routes/mypage'));
+app.use('/', require('./routes/sendmail'));

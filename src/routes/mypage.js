@@ -1,7 +1,7 @@
 const app = require('express').Router();
-const collections = require('../constants').collections;
+const collections = require('../utils/constants').collections;
 const db = require('../db');
-const hasLoggedIn = require('../logincheck');
+const hasLoggedIn = require('../auth/loginchecker');
 
 app.get('/mypage', hasLoggedIn, (req, resp) => {
     console.log('mypage: ', req.user);

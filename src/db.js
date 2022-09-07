@@ -1,4 +1,6 @@
-const dbName = require('./constants').dbName;
+const dbName = require('./utils/constants').dbName;
+
+require('dotenv').config();
 
 var db;
 
@@ -20,17 +22,17 @@ class DB {
      * Initialize this DB.
      */
     init() {
-        this.mongoClient.connect(this.dbUrl, (error, client) => {
-            if (error) {
-                console.log(error);
-                console.log('-----------------------');
-                return;
-            }
-
-            this.db = client.db(dbName);
-
-            console.log('connected to MongoDb');
+        const p = new Promise((resolve, reject) => {
+            this.mongoClient.connect(this.dbUrl, (error, client) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    this.db = client.db(dbName);
+                    resolve('connected to MongoDB');
+                }
+            });
         });
+        p.then(msg => console.log(msg)).catch(err => console.error(err));
     }
 
     /**
@@ -155,7 +157,6 @@ class DB {
      * @param {*} collection where the item to be updated is contained.
      * @param {*} clientCallback which is executed if it is successful to update it. You can set this parameter as undefined or null,
      *                     if you don't want a callback method to be executed.
-     * @return result of query to db
      */
     updateMultipleItems(query, to, method, collection, clientCallback) {
         if (method) {
@@ -180,7 +181,10 @@ function callback(err, result, clientCallback) {
         }
     }
 }
-db = new DB();
-db.init();
+
+if (db == undefined || db == null) {
+    db = new DB();
+    db.init();
+}
 
 module.exports = db;

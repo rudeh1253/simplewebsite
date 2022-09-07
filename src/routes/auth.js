@@ -1,14 +1,13 @@
 const app = require('express').Router();
 const db = require('../db');
-const collections = require('../constants').collections;
+const collections = require('../utils/constants').collections;
 const crypto = require('crypto');
-
 require('dotenv').config();
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
-const { pbkdf2Iteration, pbkdf2Len } = require('../constants');
+const { pbkdf2Iteration, pbkdf2Len } = require('../utils/constants');
+const check = require('../auth/accountformchecker');
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
@@ -27,13 +26,19 @@ app.get('/signup', (req, resp) => {
     resp.render('signup.ejs');
 });
 
-app.post('/signup', (req, resp, next) => {
+app.post('/signup', check, (req, resp, next) => {
     const salt = crypto.randomBytes(128).toString('base64');
     crypto.pbkdf2(req.body.pw, salt, pbkdf2Iteration, pbkdf2Len, 'sha256', (err, derivedPassword) => {
         if (err) {
             return next(err);
         }
-        db.insertOne({ id: req.body.id, pw: derivedPassword, salt: salt }, collections.login, (err, result) => {
+        const accountData = {
+            id: req.body.id,
+            pw: derivedPassword,
+            salt: salt,
+            email: req.body.email
+        };
+        db.insertOne(accountData, collections.login, (err, result) => {
             if (err) {
                 return next(err);
             } else {
