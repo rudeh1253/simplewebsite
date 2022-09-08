@@ -4,13 +4,15 @@ const collectionsName = require('../utils/constants').collections;
 
 router.get('/list', (req, resp) => {
     db.findMultipleItemsAsAnArray({ }, collectionsName.post, (err, result) => {
-        resp.render('list.ejs', { posts: result }); 
+        result.loggedIn = req.user != undefined;
+        resp.render('list.ejs', { data: result }); 
     });
 });
 
 router.get('/list/:number', (req, resp) => {
     db.findOne({ _id: parseInt(req.params.number) }, collectionsName.post, (err, result) => {
-        resp.render('detail.ejs', { dat: result });
+        result.loggedIn = req.user != undefined;
+        resp.render('detail.ejs', { data: result });
     });
 });
 

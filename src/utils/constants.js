@@ -1,7 +1,8 @@
 const collections = {
     post: 'post',
     postCount: 'postCount',
-    login: 'login'
+    login: 'login',
+    sessions: 'sessions'
 };
 
 exports.collections = collections;

@@ -6,4 +6,4 @@ const hasLoggedIn = (req, resp, next) => {
     }
 }
 
-module.exports = hasLoggedIn;
+exports.hasLoggedIn = hasLoggedIn;

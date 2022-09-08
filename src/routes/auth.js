@@ -9,12 +9,21 @@ const session = require('express-session');
 const { pbkdf2Iteration, pbkdf2Len } = require('../utils/constants');
 const check = require('../auth/accountformchecker');
 
-app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: false }));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/login', (req, resp) => {
-    resp.render('login.ejs');
+    const data = {
+        data: {
+            loggedIn: req.user != undefined
+        }
+    };
+    resp.render('login.ejs', data);
 });
 
 app.post('/login', passport.authenticate('local', {
@@ -23,7 +32,13 @@ app.post('/login', passport.authenticate('local', {
 }));
 
 app.get('/signup', (req, resp) => {
-    resp.render('signup.ejs');
+    const data = {
+        data: {
+            loggedIn: req.user != undefined,
+            errorElements: req.query
+        }
+    };
+    resp.render('signup.ejs', data);
 });
 
 app.post('/signup', check, (req, resp, next) => {

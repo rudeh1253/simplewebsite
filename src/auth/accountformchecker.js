@@ -12,7 +12,11 @@ function check(formData, resp, next) {
                 && !verifiedData.email) {
             next();
         } else {
-            resp.redirect('/signup');// TODO
+            resp.redirect('/signup?' + 'invalidId=' + !aboutFormat.validId
+                                     + '&invalidPw=' + !aboutFormat.validPw
+                                     + '&invalidEmail=' + !aboutAuth.validEmail
+                                     + '&idDuplicate=' + verifiedData.id
+                                     + '&emailDuplicate=' + verifiedData.email);// TODO
         }
     });
 };

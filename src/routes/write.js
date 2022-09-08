@@ -1,14 +1,19 @@
 const db = require('../db');
-const hasLoggedIn = require('../auth/loginchecker');
+const { hasLoggedIn } = require('../auth/loginchecker');
 const collections = require('../utils/constants').collections;
 
 const app = require('express').Router();
 
 app.get('/write', hasLoggedIn, (req, resp) => {
-    resp.render('write.ejs');
+    const data = {
+        data: {
+            loggedIn: req.user != undefined
+        }
+    };
+    resp.render('write.ejs', data);
 });
 
-app.post('/write', async (req, resp) => {
+app.post('/write', (req, resp) => {
     db.findOne({ name: 'count' }, collections.postCount, (err, result) => {
         const reqData = {
             _id: result.count + 1,
