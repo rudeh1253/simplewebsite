@@ -27,5 +27,21 @@ Create, read, update, delete a plan.
 - Search posts with keywords and options.
 - Using regular expressions.
 
+# Use cases
+### Login
+![pjt1](https://user-images.githubusercontent.com/60085941/190142783-43c23a31-1ddb-4226-9f57-1a9b460f63f4.gif)
+
+### Sign-up
+![pjt2](https://user-images.githubusercontent.com/60085941/190142795-e969da61-7ac2-4cff-ba48-c69a48a5a94f.gif)
+
+### Create posts
+![pjt3](https://user-images.githubusercontent.com/60085941/190142800-f9d59f12-2d1e-436b-862b-fb303530fce4.gif)
+
+### Update and delete posts
+![pjt4](https://user-images.githubusercontent.com/60085941/190142811-e1b2e510-bf5f-49ae-be0f-bb7f75d860f3.gif)
+
+### Search
+![pjt5](https://user-images.githubusercontent.com/60085941/190142825-6fd3d4af-d62a-4fe0-98ff-91e8dd67f5bb.gif)
+
 # Support Language
 - Korean
