@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Google Cloud Configuration file
+app.yaml
