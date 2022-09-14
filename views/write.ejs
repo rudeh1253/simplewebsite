@@ -13,15 +13,19 @@
     <%- include('navbar.ejs') %>
 
     <div style="padding: 3em;">
+        <% if (data.mode == 'write') { %>
         <form action="/write" method="post">
+        <% } else if (data.mode == 'edit') { %>
+        
+        <% } %>
             <div class="mb-3">
                 <label for="inputTitle" class="form-label">제목</label>
                 <span id="instrcution-for-title" class="form-text">제목을 입력하세요.</span>
-                <input type="text" class="form-control" name="title" id="inputTitle" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="title" id="inputTitle" aria-describedby="emailHelp" value="<%= data.title %>">
             </div>
             <div class="mb-3">
                 <label for="inputDescription" class="form-label">상세</label>
-                <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" maxlength="1000" placeholder="1000자 이내"></textarea>
+                <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" maxlength="1000" placeholder="1000자 이내"><%= data.description %></textarea>
             </div>
             <div class="mb-3">
                 <label for="startDate" class="form-label">시작 날짜</label>
@@ -37,8 +41,12 @@
                     완료?
                 </label>
             </div>
+            <% if (data.mode == 'write') { %>
             <button type="submit" class="btn btn-dark" id="add-btn" disabled>추가</button>
         </form>
+            <% } else if (data.mode == 'edit') { %>
+            <button type="button" class="btn btn-dark" id="edit_btn">수정</button>
+            <% } %>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
@@ -57,10 +65,9 @@
 
         const startDate = $('#startDate');
         const endDate = $('#endDate');
-        const today = new Date().toISOString().split('T')[0];
 
-        startDate.val(today);
-        endDate.val(today);
+        startDate.val('<%= data.startDate %>');
+        endDate.val('<%= data.endDate %>');
 
         var cacheEndDate = endDate.val();
 
@@ -85,6 +92,23 @@
                 cacheEndDate = endDateElem.val();
             }
         });
+
+        if ('<%= data.mode %>' == 'edit') {
+            $('#edit_btn').click(e => {
+                const url = '/edit/<%= data._id %>?'
+                    + 'title=' + $('#inputTitle').val()
+                    + '&description=' + $('#inputDescription').val()
+                    + '&startDate=' + $('#startDate').val()
+                    + '&endDate=' + $('#endDate').val()
+                    + '&done=' + $('#done').prop('checked');
+                $.ajax({
+                    method: 'PUT',
+                    url: url
+                }).done(result => {
+                    window.location.replace('/list');
+                });
+            })
+        }
     </script>
 </body>
 </html>

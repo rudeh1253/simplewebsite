@@ -21,3 +21,4 @@ app.use('/', require('./routes/mypage'));
 app.use('/', require('./routes/sendmail'));
 app.use('/', require('./routes/error'));
 app.use('/', require('./routes/checkchange'));
+app.use('/', require('./routes/edit.js'));

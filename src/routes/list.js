@@ -9,7 +9,6 @@ router.get('/list', (req, resp) => {
     } else if (req.query.author != undefined) {
         dbQuery.author = new RegExp(req.query.author);
     }
-    console.log(dbQuery);
     db.findMultipleItemsAsAnArray(dbQuery, collections.post, (err, result) => {
         result.loggedIn = req.user != undefined;
         resp.render('list.ejs', { data: result }); 

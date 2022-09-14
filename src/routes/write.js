@@ -5,9 +5,19 @@ const collections = require('../utils/constants').collections;
 const app = require('express').Router();
 
 app.get('/write', hasLoggedIn, (req, resp) => {
+    const today = new Date(Date.now())
+    const todayFormat = today.getFullYear() + '-'
+        + ((today.getMonth() + 1) / 10 + 0.01).toString().replace('.', '').substring(0, 2) + '-'
+        + (today.getDate() / 10 + 0.01).toString().replace('.', '').substring(0, 2);
     const data = {
         data: {
-            loggedIn: req.user != undefined
+            loggedIn: req.user != undefined,
+            mode: 'write',
+            title: '',
+            description: '',
+            startDate: todayFormat,
+            endDate: todayFormat,
+            done: false
         }
     };
     resp.render('write.ejs', data);

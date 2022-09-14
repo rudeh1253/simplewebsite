@@ -20,11 +20,13 @@ const pbkdf2Len = 32;
 exports.pbkdf2Len = pbkdf2Len;
 
 const errorType = {
-    postNotExists: 'postNotExists'
+    postNotExists: 'postNotExists',
+    notAuthorized: 'notAuthorized'
 };
 
 const errorMessage = {
-    postNotExists: '요청한 포스트가 없습니다'
+    postNotExists: '요청한 포스트가 없습니다',
+    notAuthorized: '권한이 없습니다'
 };
 
 exports.errorType = errorType;
