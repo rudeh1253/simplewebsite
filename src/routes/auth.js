@@ -17,7 +17,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/login', (req, resp) => {
+const notLoggedIn = (req, resp, next) => {
+    if (!req.user) {
+        next();
+    } else {
+        resp.redirect('/');
+    }
+}
+
+app.get('/login', notLoggedIn, (req, resp) => {
     const data = {
         data: {
             loggedIn: req.user != undefined
@@ -31,7 +39,7 @@ app.post('/login', passport.authenticate('local', {
     failureRedirect: '/fail'
 }));
 
-app.get('/signup', (req, resp) => {
+app.get('/signup', notLoggedIn, (req, resp) => {
     const data = {
         data: {
             loggedIn: req.user != undefined,
@@ -60,6 +68,16 @@ app.post('/signup', check, (req, resp, next) => {
                 resp.redirect('/'); // TODO Redirect the user to a page of success of sign-up.
             }
         });
+    });
+});
+
+app.get('/logout', (req, resp, next) => {
+    req.logout(err => {
+        if (err) {
+            return next(err);
+        } else {
+            resp.redirect('/');
+        }
     });
 });
 
