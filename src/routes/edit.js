@@ -22,8 +22,6 @@ app.get('/edit/:number', hasLoggedIn, (req, resp) => {
             } else {
                 resp.redirect('/error?errorType=' + errorType.notAuthorized);
             }
-            
-            
         }
     });
 });

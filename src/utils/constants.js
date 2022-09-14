@@ -21,12 +21,14 @@ exports.pbkdf2Len = pbkdf2Len;
 
 const errorType = {
     postNotExists: 'postNotExists',
-    notAuthorized: 'notAuthorized'
+    notAuthorized: 'notAuthorized',
+    unknownError: 'unknownError'
 };
 
 const errorMessage = {
     postNotExists: '요청한 포스트가 없습니다',
-    notAuthorized: '권한이 없습니다'
+    notAuthorized: '권한이 없습니다',
+    unknownError: '원인을 알 수 없는 오류가 발생했습니다.'
 };
 
 exports.errorType = errorType;

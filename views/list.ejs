@@ -34,7 +34,10 @@
             <p class="mb-1">시작날짜: <%= data[i].startDate %></p>
             <p class="mb-1">종료날짜: <%= data[i].endDate %></p>
             <!-- <small>And some small print.</small>   A part of the description may be here -->
-            <button class="delete btn btn-danger" data-id="<%= data[i]._id %>">삭제</button>
+            <div style="display: inline-block; width: 70%;">
+                <button type="button" class="edit btn btn-success" data-id="<%= data[i]._id %>">수정</button>
+                <button type="button" class="delete btn btn-danger" data-id="<%= data[i]._id %>">삭제</button>
+            </div>
         </div>
         <% } %>
     </div>
@@ -44,15 +47,20 @@
     <!-- JavaScript Bundle with Popper -->
     
     <script>
+        $('.edit').click(e => {
+            console.log('/edit/' + e.target.dataset.id);
+            window.location.replace('/edit/' + e.target.dataset.id);
+        })
+
         $('.delete').click(e => {
             $.ajax({
                 method: 'DELETE',
                 url: '/delete/' + e.target.dataset.id,
             }).done(result => {
                 if (result.message == 'succeeded') {
-                    $(e.target).parent('div').remove();
+                    $(e.target).parent('div').parent('div').remove();
                 } else if ( result.message == 'not_author') {
-                    alert('타인의 글을 삭제할 수 없습니다.');
+                    alert('권한이 없습니다');
                 }
             }).fail((xhr, status, err) => {
                 console.error(xhr, status, err);
@@ -68,7 +76,7 @@
             }
             url +=  $('#searchContent').val();
             window.location.replace(url);
-        })
+        });
     </script>
 </body>
 </html>

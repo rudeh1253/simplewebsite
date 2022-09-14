@@ -16,7 +16,10 @@
             <h6 class="card-subtitle mb-2 text-muted">글 번호: <%= data._id %></h6>
             <p class="card-text" style="font-size: 1.2em; color: dimgray;"><%= data.startDate %> ~ <%= data.endDate %></p>
             <p class="card-text"><%= data.description %></p>
-            <button class="btn btn-danger">삭제</button>
+            <div style="display: inline-block; width: 70%;">
+                <button type="button" class="btn btn-success" id="edit">수정</button>
+                <button type="button" class="btn btn-danger" id="delete">삭제</button>
+            </div>
         </div>
     </div>
 
@@ -24,6 +27,25 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Ga'gi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script>
+        $('#edit').click(e => {
+            window.location.replace('/edit/<%= data._id %>');
+        });
+
+        $('#delete').click(e => {
+            console.log('asdf');
+            $.ajax({
+                method: 'DELETE',
+                url: '/delete/<%= data._id %>'
+            }).done(result => {
+                if (result.message == 'succeeded') {
+                    window.location.replace('/list');
+                } else if ( result.message == 'not_author') {
+                    alert('권한이 없습니다');
+                }
+            }).fail((xhr, status, err) => {
+                window.location.replace('/error?errorType=unknownError');
+            });
+        })
     </script>
 </body>
 </html>
