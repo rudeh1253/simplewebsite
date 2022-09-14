@@ -19,12 +19,17 @@
         </select>
     </div>
 
-    <div class="list-group">
-        <% for (let i = 0; i < data.length; i++) { %>
-        <div class="list-group-item list-group-item-action">
+    <div class="list-group" style="padding: 15px;">
+        <% for (let i = data.length - 1; i >= 0; i--) { %>
+        <div class="list-group-item list-group-item-action" style="width: 90%;">
             <div class="d-flex w-100 justify-content-between">
                 <a style="text-decoration: none; color: black;" href="<%= '/list/' + data[i]._id %>" aria-current="true"><h5 class="mb-1"><%= data[i].title %></h5></a>
-                <small>글 번호: <%= data[i]._id %></small>
+                <div style="position: absolute; right: 1%;">
+                    <small>글 번호: <%= data[i]._id %></small>
+                </div>
+                <div style="position: absolute; right: 1%; top: 20%;">
+                    <small>작성자: <%= data[i].author %></small>
+                </div>
             </div>
             <p class="mb-1">시작날짜: <%= data[i].startDate %></p>
             <p class="mb-1">종료날짜: <%= data[i].endDate %></p>

@@ -19,8 +19,7 @@ const sendMail = (receiver, authCode, resp) => {
         subject: '메일 인증',
         text: 'Verification Code: ' + authCode
     };
-
-    if (mailOptions.receiver != null && mailOptions.receiver != undefined) {
+    if (mailOptions.to != null && mailOptions.to != undefined) {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error);

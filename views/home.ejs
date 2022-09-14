@@ -10,11 +10,54 @@
 </head>
 <body>
     <%- include('navbar.ejs') %>
+
+    
+
+    <% if (data.loggedIn) { %>
+        <h1 class="display-6 mt-3">오늘 할 일</h1>
+        <ul class="list-group">
+            <% for (let i = 0; i < data.todayTODO.length; i++) { %>
+                <li class="list-group-item">
+                    <% if (data.todayTODO[i].done) { %>
+                        <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.todayTODO[i]._id %>" checked>
+                    <% } else { %>
+                        <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.todayTODO[i]._id %>">
+                    <% } %>
+                    <label class="form-check-label"><%= data.todayTODO[i].title %></label>
+                </li>
+            <% } %>
+        </ul>
+
+        <h1 class="display-6 mt-3">내일 할 일</h1>
+        <ul class="list-group">
+            <% for (let i = 0; i < data.tomorrowTODO.length; i++) { %>
+                <li class="list-group-item">
+                    <% if (data.tomorrowTODO[i].done) { %>
+                        <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.tomorrowTODO[i]._id %>" checked>
+                    <% } else { %>
+                        <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.todayTODO[i]._id %>">
+                    <% } %>
+                    <label class="form-check-label"><%= data.tomorrowTODO[i].title %></label>
+                </li>
+            <% } %>
+        </ul>
+    <% } else { %>
+    <% } %>
       
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script>
-        console.log(Object.keys(sessionStorage));
+        $('.doneChecker').change(e => {
+            $.ajax({
+                method: 'PUT',
+                url: '/checkchange/' + e.target.dataset.id + '?to=' + $(e.target).prop('checked')
+            }).done(result => {
+
+            }).fail((xhr, status, err) => {
+
+            });
+        });
     </script>
 </body>
 </html>
