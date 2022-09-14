@@ -35,7 +35,7 @@
                     <% if (data.tomorrowTODO[i].done) { %>
                         <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.tomorrowTODO[i]._id %>" checked>
                     <% } else { %>
-                        <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.todayTODO[i]._id %>">
+                        <input class="form-check-input me-1 doneChecker" type="checkbox" value="" data-id="<%= data.tomorrowTODO[i]._id %>">
                     <% } %>
                     <label class="form-check-label"><%= data.tomorrowTODO[i].title %></label>
                 </li>
