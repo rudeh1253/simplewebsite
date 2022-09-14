@@ -20,13 +20,15 @@ const sendMail = (receiver, authCode, resp) => {
         text: 'Verification Code: ' + authCode
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            resp.status(200).send({ message: 'succeeded' });
-        }
-    });
+    if (mailOptions.receiver != null && mailOptions.receiver != undefined) {
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                resp.status(200).send({ message: 'succeeded' });
+            }
+        });
+    }
 };
 
 app.post('/sendmail', (req, resp) => {

@@ -18,3 +18,14 @@ exports.pbkdf2Iteration = pbkdf2Iteration;
 const pbkdf2Len = 32;
 
 exports.pbkdf2Len = pbkdf2Len;
+
+const errorType = {
+    postNotExists: 'postNotExists'
+};
+
+const errorMessage = {
+    postNotExists: '요청한 포스트가 없습니다'
+};
+
+exports.errorType = errorType;
+exports.errorMessage = errorMessage;
