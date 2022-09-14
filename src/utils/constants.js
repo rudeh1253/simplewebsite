@@ -29,3 +29,7 @@ const errorMessage = {
 
 exports.errorType = errorType;
 exports.errorMessage = errorMessage;
+
+const adminAccount = "admin138y18fqef";
+
+exports.adminAccount = adminAccount;

@@ -3,7 +3,14 @@ const db = require('../db');
 const { collections, errorType } = require('../utils/constants');
 
 router.get('/list', (req, resp) => {
-    db.findMultipleItemsAsAnArray({ }, collections.post, (err, result) => {
+    let dbQuery = { };
+    if (req.query.title != undefined) {
+        dbQuery.title = new RegExp(req.query.title);
+    } else if (req.query.author != undefined) {
+        dbQuery.author = new RegExp(req.query.author);
+    }
+    console.log(dbQuery);
+    db.findMultipleItemsAsAnArray(dbQuery, collections.post, (err, result) => {
         result.loggedIn = req.user != undefined;
         resp.render('list.ejs', { data: result }); 
     });
