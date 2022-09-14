@@ -19,4 +19,3 @@ app.use('/', require('./routes/list'));
 app.use('/', require('./routes/delete'));
 app.use('/', require('./routes/mypage'));
 app.use('/', require('./routes/sendmail'));
-app.use('/', require('./routes/error'));

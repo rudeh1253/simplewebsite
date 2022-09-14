@@ -63,16 +63,6 @@ app.post('/signup', check, (req, resp, next) => {
     });
 });
 
-app.get('/logout', (req, resp, next) => {
-    req.logout(err => {
-        if (err) {
-            return next(err);
-        } else {
-            resp.redirect('/');
-        }
-    });
-});
-
 passport.use(new LocalStrategy({
     usernameField: 'id',
     passwordField: 'pw',
